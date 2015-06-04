@@ -1,0 +1,30 @@
+{
+  "name": "genderize-node",
+  "version": "0.0.1",
+  "description": "A small application that requests names and stores the gender in a CSV using the genderize.io API.",
+  "main": "app.js",
+  "dependencies": {
+    "cheerio": "^0.19.0",
+    "request": "^2.57.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Bonsanto/genderize-node.git"
+  },
+  "keywords": [
+    "genderize",
+    "node.js",
+    "io.js",
+    "TypeScript"
+  ],
+  "author": "Mood",
+  "license": "GNU",
+  "bugs": {
+    "url": "https://github.com/Bonsanto/genderize-node/issues"
+  },
+  "homepage": "https://github.com/Bonsanto/genderize-node"
+}
