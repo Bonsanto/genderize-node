@@ -13,11 +13,14 @@ var http = require("request"), fs = require("fs"), cheerio = require("cheerio");
 //fun(0);
 var csvInPath = "../data/data.csv", csvOutPath = "../data/" + (new Date()).toDateString() + "out.csv";
 /**
+ *
  * @sourcePath string that shows the location of the .csv to analyze.
+ * @targetPath string that shows the location where you want to write the resulting .csv to analyze.
  * @fixerFunctions array with all the functions that will be executed to tidy up the data set, functions must return the dataSet.
  * @encode optional string parameter that allows to change the encoded type default is UTF-8.
  * @columnSeparator optional character that is used as the splitter between columns.
  * @rowSeparator optional character that is used as the splitter between the rows.
+ *
  * */
 var readCSVFile = function (sourcePath, targetPath, fixerFunctions, encode, columnSeparator, rowSeparator) {
     if (encode === void 0) { encode = "UTF-8"; }
@@ -32,9 +35,22 @@ var readCSVFile = function (sourcePath, targetPath, fixerFunctions, encode, colu
         console.log(tempDataSet.length);
     });
 };
+/**
+ *
+ * @dataSet Array of an Array of strings where all the data is stored.
+ *
+ * */
 var findSpacedNames = function (dataSet) {
     return dataSet.filter(function (row) { return row.length > 2 && row[1].indexOf(" ") > -1; });
 };
+/**
+ *
+ * @dataSet Array of an Array of strings where all the data is stored.
+ * @path string that shows the location where you want to write the resulting .csv to analyze.
+ * @columnSeparator optional character that is used as the splitter between columns.
+ * @rowSeparator optional character that is used as the splitter between the rows.
+ *
+ * */
 var writeCSV = function (dataSet, path, columnSeparator, rowSeparator) {
     if (columnSeparator === void 0) { columnSeparator = ","; }
     if (rowSeparator === void 0) { rowSeparator = "\n"; }
@@ -45,13 +61,22 @@ var writeCSV = function (dataSet, path, columnSeparator, rowSeparator) {
     });
     return dataSet;
 };
-//
-//var fixNames:Function = (dataSet:Array<Array<string>>) => {
-//	var cheerio = require
-//	var tempData = dataSet;
-//
-//	return tempData;
-//};
+/**
+ *
+ * @dataSet Array of an Array of strings where all the data is stored.
+ *
+ * */
+var fixNames = function (dataSet) {
+    var cheerio = require("cheerio");
+    //var tempData = dataSet; todo: use the dataSet instead the only 1 ci
+    var ci = 10000000;
+    var cleaner = function (ci) {
+        http("http://cne.gob.ve/web/registro_electoral/ce.php?nacionalidad=V&cedula=" + ci, function (error, response, body) {
+            var cheerio;
+        });
+    };
+    //return tempData; todo: return the dataSet
+};
 readCSVFile(csvInPath, csvOutPath, [findSpacedNames, writeCSV]);
 //
 //var favio = function () {

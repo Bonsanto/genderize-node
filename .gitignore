@@ -53,3 +53,4 @@ crashlytics-build.properties
 # ignore node_modules
 node_modules
 modules
+app/index.html
