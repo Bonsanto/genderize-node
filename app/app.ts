@@ -88,23 +88,27 @@ var writeCSV:Function = (dataSet:Array<Array<string>>,
  * @dataSet Array of an Array of strings where all the data is stored.
  *
  * */
-var fixNames:Function = (dataSet:Array<Array<string>>) => {
-	var cheerio = require("cheerio");
-	//var tempData = dataSet; todo: use the dataSet instead the only 1 ci
-	var ci = 10000000;
+var getCompleteNames:Function = (dataSet:Array<Array<string>>) => {
+	var ci:Array<Array<string>> = dataSet || [["19623747"], ["15458525"], ["12000000"], ["12000001"]],
+		responses:Array<string> = [];
 
+	ci.forEach(citizen => {
+		http("http://cne.gob.ve/web/registro_electoral/ce.php?nacionalidad=V&cedula=" + citizen[0], (error, response, body) => {
+			if (body && !error) {
+				var $ = cheerio.load(body);
 
-	var cleaner = ci => {
-		http("http://cne.gob.ve/web/registro_electoral/ce.php?nacionalidad=V&cedula=" + ci, (error, response, body) => {
-			var cheerio =
+				var line = citizen[0] + "," + $("tr b")[3].children[0].data + "\n";
+				fs.appendFileSync("trial.csv", line);
+			}
 		});
-	};
+	});
 
-	//return tempData; todo: return the dataSet
+	//writeCSV(responses, "trial.csv");
+	return responses;// todo: return the dataSet
 };
 
-readCSVFile(csvInPath, csvOutPath, [findSpacedNames, writeCSV]);
-
+//readCSVFile(csvInPath, csvOutPath, [findSpacedNames, writeCSV]);
+getCompleteNames();
 
 //
 //var favio = function () {

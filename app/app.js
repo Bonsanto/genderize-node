@@ -66,18 +66,22 @@ var writeCSV = function (dataSet, path, columnSeparator, rowSeparator) {
  * @dataSet Array of an Array of strings where all the data is stored.
  *
  * */
-var fixNames = function (dataSet) {
-    var cheerio = require("cheerio");
-    //var tempData = dataSet; todo: use the dataSet instead the only 1 ci
-    var ci = 10000000;
-    var cleaner = function (ci) {
-        http("http://cne.gob.ve/web/registro_electoral/ce.php?nacionalidad=V&cedula=" + ci, function (error, response, body) {
-            var cheerio;
+var getCompleteNames = function (dataSet) {
+    var ci = dataSet || [["19623747"], ["15458525"], ["12000000"], ["12000001"]], responses = [];
+    ci.forEach(function (citizen) {
+        http("http://cne.gob.ve/web/registro_electoral/ce.php?nacionalidad=V&cedula=" + citizen[0], function (error, response, body) {
+            if (body && !error) {
+                var $ = cheerio.load(body);
+                var line = citizen[0] + "," + $("tr b")[3].children[0].data + "\n";
+                fs.appendFileSync("trial.csv", line);
+            }
         });
-    };
-    //return tempData; todo: return the dataSet
+    });
+    //writeCSV(responses, "trial.csv");
+    return responses; // todo: return the dataSet
 };
-readCSVFile(csvInPath, csvOutPath, [findSpacedNames, writeCSV]);
+//readCSVFile(csvInPath, csvOutPath, [findSpacedNames, writeCSV]);
+getCompleteNames();
 //
 //var favio = function () {
 //	ugly.forEach(function (nombre) {
